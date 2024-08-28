@@ -14,7 +14,14 @@ public class DrawerInteractable : MonoBehaviour
         if (keySocket != null)
         {
             keySocket.selectEntered.AddListener(OnDrawerUnlocked);
+            keySocket.selectExited.AddListener(OnDrawerLocked);
         }
+    }
+
+    private void OnDrawerLocked(SelectExitEventArgs arg0)
+    {
+        isLocked = true;
+        Debug.Log("***** Drawer Locked");
     }
 
     private void OnDrawerUnlocked(SelectEnterEventArgs arg0)
