@@ -6,12 +6,17 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class DrawerInteractable : XRGrabInteractable
 {
+    [SerializeField] Transform drawerTransform;
     [SerializeField] XRSocketInteractor keySocket;
     [SerializeField] bool isLocked;
+    [SerializeField] private Vector3 limitDistance = new Vector3(.02f, .02f, 0);
 
     private Transform parentTransform;
     private const string defaultLayer = "Default";
     private const string grabLayer = "Grab";
+    private bool isGrabbed;
+    private Vector3 limitPosition;
+
 
     void Start()
     {
@@ -21,6 +26,7 @@ public class DrawerInteractable : XRGrabInteractable
             keySocket.selectExited.AddListener(OnDrawerLocked);
         }
         parentTransform = transform.parent.transform;
+        limitPosition = drawerTransform.localPosition;
     }
 
     private void OnDrawerLocked(SelectExitEventArgs arg0)
@@ -41,10 +47,11 @@ public class DrawerInteractable : XRGrabInteractable
         if (!isLocked)
         {
             transform.SetParent(parentTransform);
+            isGrabbed = true;
         }
         else
         {
-            interactionLayers = InteractionLayerMask.GetMask(defaultLayer);
+            ChangeLayerMaks(defaultLayer);
         }
 
     }
@@ -52,11 +59,38 @@ public class DrawerInteractable : XRGrabInteractable
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
-        interactionLayers = InteractionLayerMask.GetMask(grabLayer);
+        ChangeLayerMaks(grabLayer);
+        isGrabbed = false;
+
+        transform.localPosition = drawerTransform.localPosition;
     }
 
     void Update()
     {
+        if (isGrabbed && drawerTransform != null)
+        {
+            drawerTransform.localPosition = new Vector3(drawerTransform.localPosition.x, drawerTransform.localPosition.y, transform.localPosition.z);
 
+            CheckLimits();
+        }
+    }
+
+    private void CheckLimits()
+    {
+        if (transform.localPosition.x >= limitPosition.x + limitDistance.x ||
+            transform.localPosition.x <= limitPosition.x - limitDistance.x)
+        {
+            ChangeLayerMaks(defaultLayer);
+        }
+        else if (transform.localPosition.y >= limitPosition.y + limitDistance.y ||
+                transform.localPosition.y <= limitPosition.y - limitDistance.y)
+        {
+            ChangeLayerMaks(defaultLayer);
+        }
+    }
+
+    private void ChangeLayerMaks(string mask)
+    {
+        interactionLayers = InteractionLayerMask.GetMask(mask);
     }
 }
