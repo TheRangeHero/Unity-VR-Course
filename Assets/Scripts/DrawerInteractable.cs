@@ -10,12 +10,13 @@ public class DrawerInteractable : XRGrabInteractable
     [SerializeField] XRSocketInteractor keySocket;
     [SerializeField] bool isLocked;
     [SerializeField] private Vector3 limitDistance = new Vector3(.02f, .02f, 0);
+    [SerializeField] float drawerLimitZ = 0.8f;
 
     private Transform parentTransform;
     private const string defaultLayer = "Default";
     private const string grabLayer = "Grab";
     private bool isGrabbed;
-    private Vector3 limitPosition;
+    private Vector3 limitPositions;
 
 
     void Start()
@@ -26,7 +27,7 @@ public class DrawerInteractable : XRGrabInteractable
             keySocket.selectExited.AddListener(OnDrawerLocked);
         }
         parentTransform = transform.parent.transform;
-        limitPosition = drawerTransform.localPosition;
+        limitPositions = drawerTransform.localPosition;
     }
 
     private void OnDrawerLocked(SelectExitEventArgs arg0)
@@ -77,15 +78,32 @@ public class DrawerInteractable : XRGrabInteractable
 
     private void CheckLimits()
     {
-        if (transform.localPosition.x >= limitPosition.x + limitDistance.x ||
-            transform.localPosition.x <= limitPosition.x - limitDistance.x)
+        if (transform.localPosition.x >= limitPositions.x + limitDistance.x ||
+            transform.localPosition.x <= limitPositions.x - limitDistance.x)
         {
             ChangeLayerMaks(defaultLayer);
         }
-        else if (transform.localPosition.y >= limitPosition.y + limitDistance.y ||
-                transform.localPosition.y <= limitPosition.y - limitDistance.y)
+        else if (transform.localPosition.y >= limitPositions.y + limitDistance.y ||
+                transform.localPosition.y <= limitPositions.y - limitDistance.y)
         {
             ChangeLayerMaks(defaultLayer);
+        }
+        else if (drawerTransform.localPosition.z <= limitPositions.z - limitDistance.z)
+        {
+            isGrabbed = false;
+            drawerTransform.localPosition = limitPositions;
+            ChangeLayerMaks(defaultLayer);
+        }
+        else if (drawerTransform.localPosition.z >= drawerLimitZ + limitDistance.z)
+        {
+            isGrabbed = false;
+            drawerTransform.localPosition = new Vector3(
+                drawerTransform.localPosition.x,
+                drawerTransform.localPosition.y,
+                drawerLimitZ
+            );
+            ChangeLayerMaks(defaultLayer);
+
         }
     }
 
