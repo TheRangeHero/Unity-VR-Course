@@ -5,9 +5,16 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class CombinationLock : MonoBehaviour
 {
+    public UnityAction UnlockAction;
+    public UnityAction LockAction;
+
+    private void OnUnlocked() => UnlockAction?.Invoke();
+    private void OnLocked() => LockAction?.Invoke();
+
     [SerializeField] Image lockedPanel;
     [SerializeField] Color unlockedColor;
     [SerializeField] Color lockedColor;
@@ -19,6 +26,7 @@ public class CombinationLock : MonoBehaviour
     [SerializeField] bool isResettable;
     [SerializeField] int[] comboValues = new int[3];
     [SerializeField] int[] inputValues;
+
 
     private const string startString = "Enter 3 Digits Combo";
     private const string resetString = "Enter 3 Digit to Reset Combo";
@@ -37,7 +45,6 @@ public class CombinationLock : MonoBehaviour
             comboButtons[i].selectEntered.AddListener(OnComboButtonPressed);
         }
     }
-
     private void OnComboButtonPressed(SelectEnterEventArgs arg0)
     {
         if (buttonPresses >= maxButtonPresses)
@@ -68,7 +75,6 @@ public class CombinationLock : MonoBehaviour
         }
 
     }
-
     private void CheckCombo()
     {
         if (resetCombo)
@@ -97,10 +103,10 @@ public class CombinationLock : MonoBehaviour
             ResetUserValues();
         }
     }
-
     private void UnlockCombo()
     {
         isLocked = false;
+        OnUnlocked();
         lockedPanel.color = unlockedColor;
         lockedText.text = unlockedString;
 
@@ -109,10 +115,10 @@ public class CombinationLock : MonoBehaviour
             ResetCombo();
         }
     }
-
     private void LockCombo()
     {
         isLocked = true;
+        OnLocked();
         lockedPanel.color = lockedColor;
         lockedText.text = lockedString;
         infoText.text = startString;
@@ -122,14 +128,12 @@ public class CombinationLock : MonoBehaviour
         }
         ResetUserValues();
     }
-
     private void ResetCombo()
     {
         infoText.text = resetString;
         ResetUserValues();
         resetCombo = true;
     }
-
     private void ResetUserValues()
     {
         inputValues = new int[comboValues.Length];
