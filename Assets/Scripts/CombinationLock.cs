@@ -10,16 +10,23 @@ public class CombinationLock : MonoBehaviour
 {
     [SerializeField] Image lockedPanel;
     [SerializeField] Color unlockedColor;
+    [SerializeField] Color lockedColor;
     [SerializeField] TMP_Text lockedText;
     [SerializeField] XRButtonInteractable[] comboButtons;
+    [SerializeField] TMP_Text infoText;
     [SerializeField] TMP_Text userInputText;
     [SerializeField] bool isLocked;
+    [SerializeField] bool isResettable;
     [SerializeField] int[] comboValues = new int[3];
     [SerializeField] int[] inputValues;
 
-    private const string unlockedString = "unlocked";
+    private const string startString = "Enter 3 Digits Combo";
+    private const string resetString = "Enter 3 Digit to Reset Combo";
+    private const string unlockedString = "Unlocked";
+    private const string lockedString = "Locked";
     private int maxButtonPresses;
     private int buttonPresses;
+    private bool resetCombo;
     void Start()
     {
         maxButtonPresses = comboValues.Length;
@@ -29,7 +36,6 @@ public class CombinationLock : MonoBehaviour
         {
             comboButtons[i].selectEntered.AddListener(OnComboButtonPressed);
         }
-
     }
 
     private void OnComboButtonPressed(SelectEnterEventArgs arg0)
@@ -65,6 +71,13 @@ public class CombinationLock : MonoBehaviour
 
     private void CheckCombo()
     {
+        if (resetCombo)
+        {
+            resetCombo = false;
+            LockCombo();
+            return;
+        }
+
         int matches = 0;
 
         for (int i = 0; i < maxButtonPresses; i++)
@@ -74,16 +87,47 @@ public class CombinationLock : MonoBehaviour
                 matches++;
             }
         }
-        if (matches == buttonPresses)
+        if (matches == maxButtonPresses)
         {
-            isLocked = false;
-            lockedPanel.color = unlockedColor;
-            lockedText.text = unlockedString;
+            UnlockCombo();
+
         }
         else
         {
             ResetUserValues();
         }
+    }
+
+    private void UnlockCombo()
+    {
+        isLocked = false;
+        lockedPanel.color = unlockedColor;
+        lockedText.text = unlockedString;
+
+        if (isResettable)
+        {
+            ResetCombo();
+        }
+    }
+
+    private void LockCombo()
+    {
+        isLocked = true;
+        lockedPanel.color = lockedColor;
+        lockedText.text = lockedString;
+        infoText.text = startString;
+        for (int i = 0; i < maxButtonPresses; i++)
+        {
+            comboValues[i] = inputValues[i];
+        }
+        ResetUserValues();
+    }
+
+    private void ResetCombo()
+    {
+        infoText.text = resetString;
+        ResetUserValues();
+        resetCombo = true;
     }
 
     private void ResetUserValues()
