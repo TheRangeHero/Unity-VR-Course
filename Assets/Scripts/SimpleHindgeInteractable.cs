@@ -6,6 +6,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class SimpleHindgeInteractable : XRSimpleInteractable
 {
     [SerializeField] bool isLocked;
+    private const string Default_Layer = "Default";
+    private const string Grab_Layer = "Grab";
 
     private Transform grabHand;
     void Start()
@@ -44,5 +46,16 @@ public class SimpleHindgeInteractable : XRSimpleInteractable
     {
         base.OnSelectExited(args);
         grabHand = null;
+        ChangeLayerMaks(Grab_Layer);
+    }
+
+    public void ReleaseHinge()
+    {
+        ChangeLayerMaks(Default_Layer);
+    }
+
+    private void ChangeLayerMaks(string mask)
+    {
+        interactionLayers = InteractionLayerMask.GetMask(mask);
     }
 }

@@ -14,8 +14,8 @@ public class DrawerInteractable : XRGrabInteractable
     [SerializeField] float drawerLimitZ = 0.8f;
 
     private Transform parentTransform;
-    private const string defaultLayer = "Default";
-    private const string grabLayer = "Grab";
+    private const string Default_Layer = "Default";
+    private const string Grab_Layer = "Grab";
     private bool isGrabbed;
     private Vector3 limitPositions;
 
@@ -57,7 +57,7 @@ public class DrawerInteractable : XRGrabInteractable
         }
         else
         {
-            ChangeLayerMaks(defaultLayer);
+            ChangeLayerMaks(Default_Layer);
         }
 
     }
@@ -65,7 +65,7 @@ public class DrawerInteractable : XRGrabInteractable
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
-        ChangeLayerMaks(grabLayer);
+        ChangeLayerMaks(Grab_Layer);
         isGrabbed = false;
 
         transform.localPosition = drawerTransform.localPosition;
@@ -86,18 +86,18 @@ public class DrawerInteractable : XRGrabInteractable
         if (transform.localPosition.x >= limitPositions.x + limitDistance.x ||
             transform.localPosition.x <= limitPositions.x - limitDistance.x)
         {
-            ChangeLayerMaks(defaultLayer);
+            ChangeLayerMaks(Default_Layer);
         }
         else if (transform.localPosition.y >= limitPositions.y + limitDistance.y ||
                 transform.localPosition.y <= limitPositions.y - limitDistance.y)
         {
-            ChangeLayerMaks(defaultLayer);
+            ChangeLayerMaks(Default_Layer);
         }
         else if (drawerTransform.localPosition.z <= limitPositions.z - limitDistance.z)
         {
             isGrabbed = false;
             drawerTransform.localPosition = limitPositions;
-            ChangeLayerMaks(defaultLayer);
+            ChangeLayerMaks(Default_Layer);
         }
         else if (drawerTransform.localPosition.z >= drawerLimitZ + limitDistance.z)
         {
@@ -107,7 +107,7 @@ public class DrawerInteractable : XRGrabInteractable
                 drawerTransform.localPosition.y,
                 drawerLimitZ
             );
-            ChangeLayerMaks(defaultLayer);
+            ChangeLayerMaks(Default_Layer);
 
         }
     }
