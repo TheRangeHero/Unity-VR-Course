@@ -28,10 +28,10 @@ public class CombinationLock : MonoBehaviour
     [SerializeField] int[] inputValues;
 
 
-    private const string startString = "Enter 3 Digits Combo";
-    private const string resetString = "Enter 3 Digit to Reset Combo";
-    private const string unlockedString = "Unlocked";
-    private const string lockedString = "Locked";
+    private const string Start_String = "Enter 3 Digits Combo";
+    private const string Reset_String = "Enter 3 Digit to Reset Combo";
+    private const string Unlocked_String = "Unlocked";
+    private const string Locked_String = "Locked";
     private int maxButtonPresses;
     private int buttonPresses;
     private bool resetCombo;
@@ -108,7 +108,7 @@ public class CombinationLock : MonoBehaviour
         isLocked = false;
         OnUnlocked();
         lockedPanel.color = unlockedColor;
-        lockedText.text = unlockedString;
+        lockedText.text = Unlocked_String;
 
         if (isResettable)
         {
@@ -120,8 +120,8 @@ public class CombinationLock : MonoBehaviour
         isLocked = true;
         OnLocked();
         lockedPanel.color = lockedColor;
-        lockedText.text = lockedString;
-        infoText.text = startString;
+        lockedText.text = Locked_String;
+        infoText.text = Start_String;
         for (int i = 0; i < maxButtonPresses; i++)
         {
             comboValues[i] = inputValues[i];
@@ -130,7 +130,7 @@ public class CombinationLock : MonoBehaviour
     }
     private void ResetCombo()
     {
-        infoText.text = resetString;
+        infoText.text = Reset_String;
         ResetUserValues();
         resetCombo = true;
     }
