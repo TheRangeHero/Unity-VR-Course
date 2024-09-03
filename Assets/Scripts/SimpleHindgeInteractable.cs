@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
-public class SimpleHindgeInteractable : XRSimpleInteractable
+public abstract class SimpleHindgeInteractable : XRSimpleInteractable
 {
     [SerializeField] bool isLocked;
     [SerializeField] Vector3 positionLimits;
@@ -47,6 +47,7 @@ public class SimpleHindgeInteractable : XRSimpleInteractable
         base.OnSelectExited(args);
         grabHand = null;
         ChangeLayerMaks(Grab_Layer);
+        ResetHinge();
     }
     private void TrackHand()
     {
@@ -75,6 +76,8 @@ public class SimpleHindgeInteractable : XRSimpleInteractable
     {
         ChangeLayerMaks(Default_Layer);
     }
+
+    protected abstract void ResetHinge();
     private void ChangeLayerMaks(string mask)
     {
         interactionLayers = InteractionLayerMask.GetMask(mask);

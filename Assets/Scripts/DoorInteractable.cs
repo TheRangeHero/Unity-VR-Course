@@ -8,15 +8,21 @@ public class DoorInteractable : SimpleHindgeInteractable
     [SerializeField] CombinationLock comboLock;
     [SerializeField] Transform doorObject;
     [SerializeField] Vector3 rotationLimits;
+    [SerializeField] Collider closedCollider;
+    [SerializeField] Collider openCollider;
+    [SerializeField] private Vector3 endRotation;
 
-    private Transform startRotation;
+
+    private bool isClosed;
+    private bool isOpen;
+    private Vector3 startRotation;
     private float startAngleX;
     protected override void Start()
     {
         base.Start();
 
-        startRotation = transform;
-        startAngleX = startRotation.localEulerAngles.x;
+        startRotation = transform.localEulerAngles;
+        startAngleX = startRotation.x;
 
         if (startAngleX >= 180)
         {
@@ -61,6 +67,8 @@ public class DoorInteractable : SimpleHindgeInteractable
 
     private void CheckLimits()
     {
+        isClosed = false;
+        isOpen = false;
         float localAngleX = transform.localEulerAngles.x;
 
         if (localAngleX >= 180)
@@ -71,11 +79,39 @@ public class DoorInteractable : SimpleHindgeInteractable
             localAngleX <= startAngleX - rotationLimits.x)
         {
             ReleaseHinge();
+        }
+    }
+    protected override void ResetHinge()
+    {
+        if (isClosed)
+        {
+            transform.localEulerAngles = startRotation;
+        }
+        else if (isOpen)
+        {
+            transform.localEulerAngles = endRotation;
+        }
+        else
+        {
             transform.localEulerAngles = new Vector3(
                 startAngleX,
                 transform.localEulerAngles.y,
-                transform.localEulerAngles.z
-            );
+                transform.localEulerAngles.z);
+        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other == closedCollider)
+        {
+            isClosed = true;
+            ReleaseHinge();
+        }
+        else if (other == openCollider)
+        {
+            isOpen = true;
+            ReleaseHinge();
         }
     }
 }
