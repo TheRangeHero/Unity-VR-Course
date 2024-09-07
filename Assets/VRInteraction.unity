@@ -19816,9 +19816,11 @@ MonoBehaviour:
   wallCubePrefab: {fileID: 8769790643816005301, guid: 05811702bab025b4e849684d5cd650da, type: 3}
   socketWallPrefab: {fileID: 5082805113220805696, guid: c0c659da6abfaa44081c7a666793c468, type: 3}
   socketPosition: 1
-  wallSocket: {fileID: 0}
-  wallCubes: []
+  generatedColumn: []
   cubeSpacing: 0.005
+  buildWall: 0
+  deleteWall: 0
+  destroyWall: 0
 --- !u!4 &699683031
 Transform:
   m_ObjectHideFlags: 0
