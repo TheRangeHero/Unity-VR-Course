@@ -16,7 +16,7 @@ public class SimpleUIControl : MonoBehaviour
         if (progressControl != null)
         {
             progressControl.OnStartGame.AddListener(StartGame);
-            progressControl.OnChallengecomplete.AddListener(ChallengeComplete);
+            progressControl.OnChallengeComplete.AddListener(ChallengeComplete);
         }
     }
 

@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class ProgressControl : MonoBehaviour
 {
     public UnityEvent<string> OnStartGame;
-    public UnityEvent<string> OnChallengecomplete;
+    public UnityEvent<string> OnChallengeComplete;
 
     [SerializeField] XRButtonInteractable startButton;
     [SerializeField] GameObject keyIndicatorLight;
