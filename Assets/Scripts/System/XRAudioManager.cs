@@ -18,24 +18,33 @@ public class XRAudioManager : MonoBehaviour
 
     [Header("Drawer Interactable")]
     [SerializeField] DrawerInteractable drawer;
-    [SerializeField] XRSocketInteractor drawerSocket;
-    [SerializeField] AudioSource drawerSound;
-    [SerializeField] AudioSource drawerSocketSound;
-    [SerializeField] AudioClip drawerMoveClip;
-    [SerializeField] AudioClip drawerSocketClip;
+    XRSocketInteractor drawerSocket;
+    AudioSource drawerSound;
+    AudioSource drawerSocketSound;
+    AudioClip drawerMoveClip;
+    AudioClip drawerSocketClip;
 
     [Header("Hinge Interactables")]
     [SerializeField] SimpleHindgeInteractable[] cabinetDoors = new SimpleHindgeInteractable[2];
-    [SerializeField] AudioSource[] cabinetDoorSound;
-    [SerializeField] AudioClip cabinetDoorMoveClip;
+    AudioSource[] cabinetDoorSound;
+    AudioClip cabinetDoorMoveClip;
+
+    [Header("Combo Lock")]
+    [SerializeField] CombinationLock comboLock;
+    AudioSource comboLockSound;
+    AudioClip lockComboClip;
+    AudioClip unlockComboClip;
+    AudioClip comboButtonPressedClip;
 
     [Header("The Wall")]
     [SerializeField] TheWall wall;
-    [SerializeField] XRSocketInteractor wallSocket;
+    XRSocketInteractor wallSocket;
     [SerializeField] AudioSource wallSound;
-    [SerializeField] AudioSource wallSocketSound;
-    [SerializeField] AudioClip destroyWallClip;
-    [SerializeField] AudioClip wallSocketClip;
+    AudioSource wallSocketSound;
+    AudioClip destroyWallClip;
+    AudioClip wallSocketClip;
+
+    [Header("Local Audio Settings")]
     [SerializeField] private AudioClip fallBackClip;
     private const string FallBackClip_Name = "fallBackClip";
 
@@ -59,6 +68,10 @@ public class XRAudioManager : MonoBehaviour
             {
                 SetCabinetDoors(i);
             }
+        }
+        if (comboLock != null)
+        {
+            SetComboLock();
         }
         if (wall != null)
         {
@@ -102,6 +115,42 @@ public class XRAudioManager : MonoBehaviour
         cabinetDoors[index].OnHingeSelected.AddListener(OnDoorMove);
         cabinetDoors[index].selectExited.AddListener(OnDoorStop);
 
+    }
+
+    private void SetComboLock()
+    {
+        comboLockSound = comboLock.transform.AddComponent<AudioSource>();
+
+        lockComboClip = comboLock.GetLockClip;
+        CheckClip(ref lockComboClip);
+
+        unlockComboClip = comboLock.GetUnlockClip;
+        CheckClip(ref unlockComboClip);
+
+        comboButtonPressedClip = comboLock.GetComboButtonPressedClip;
+        CheckClip(ref comboButtonPressedClip);
+
+        comboLock.UnlockAction += OnComboUnlocked;
+        comboLock.LockAction += OnComboLocked;
+        comboLock.ComboButtonPressed += OnComboBUttonPressed;
+    }
+
+    private void OnComboBUttonPressed()
+    {
+        comboLockSound.clip = comboButtonPressedClip;
+        comboLockSound.Play();
+    }
+
+    private void OnComboLocked()
+    {
+        comboLockSound.clip = lockComboClip;
+        comboLockSound.Play();
+    }
+
+    private void OnComboUnlocked()
+    {
+        comboLockSound.clip = unlockComboClip;
+        comboLockSound.Play();
     }
 
     private void OnDoorStop(SelectExitEventArgs arg0)

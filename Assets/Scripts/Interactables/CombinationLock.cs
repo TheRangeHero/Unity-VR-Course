@@ -11,9 +11,15 @@ public class CombinationLock : MonoBehaviour
 {
     public UnityAction UnlockAction;
     public UnityAction LockAction;
+    public UnityAction ComboButtonPressed;
+
+    public AudioClip GetLockClip => lockComboClip;
+    public AudioClip GetUnlockClip => unlockComboClip;
+    public AudioClip GetComboButtonPressedClip => comboButtonPressedClip;
 
     private void OnUnlocked() => UnlockAction?.Invoke();
     private void OnLocked() => LockAction?.Invoke();
+    private void OnComboButtonPress() => ComboButtonPressed?.Invoke();
 
     [SerializeField] Image lockedPanel;
     [SerializeField] Color unlockedColor;
@@ -26,7 +32,9 @@ public class CombinationLock : MonoBehaviour
     [SerializeField] bool isResettable;
     [SerializeField] int[] comboValues = new int[3];
     [SerializeField] int[] inputValues;
-
+    [SerializeField] AudioClip lockComboClip;
+    [SerializeField] AudioClip unlockComboClip;
+    [SerializeField] AudioClip comboButtonPressedClip;
 
     private const string Start_String = "Enter 3 Digits Combo";
     private const string Reset_String = "Enter 3 Digit to Reset Combo";
@@ -71,6 +79,10 @@ public class CombinationLock : MonoBehaviour
             {
                 //check the combo
                 CheckCombo();
+            }
+            else
+            {
+                OnComboButtonPress();
             }
         }
 
@@ -136,6 +148,10 @@ public class CombinationLock : MonoBehaviour
     }
     private void ResetUserValues()
     {
+        if (isLocked)
+        {
+            OnLocked();
+        }
         inputValues = new int[comboValues.Length];
         userInputText.text = "";
         buttonPresses = 0;

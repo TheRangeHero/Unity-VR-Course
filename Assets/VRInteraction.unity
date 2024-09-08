@@ -37934,10 +37934,15 @@ MonoBehaviour:
   drawerMoveClip: {fileID: 0}
   drawerSocketClip: {fileID: 0}
   cabinetDoors:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 7232470889457478325}
+  - {fileID: 8471264457849542775}
   cabinetDoorSound: []
   cabinetDoorMoveClip: {fileID: 0}
+  comboLock: {fileID: 1915572304}
+  comboLockSound: {fileID: 0}
+  lockComboClip: {fileID: 0}
+  unlockComboClip: {fileID: 0}
+  comboButtonPressedClip: {fileID: 0}
   wall: {fileID: 699683030}
   wallSocket: {fileID: 0}
   wallSound: {fileID: 0}
@@ -61396,6 +61401,9 @@ MonoBehaviour:
   isResettable: 1
   comboValues: 070000000400000003000000
   inputValues: 
+  lockComboClip: {fileID: 8300000, guid: a7d20e9f23bd7cc449823e482e098902, type: 3}
+  unlockComboClip: {fileID: 8300000, guid: dff3014fa4e23374685962fafb39949f, type: 3}
+  comboButtonPressedClip: {fileID: 8300000, guid: 256bdb10da09c744f86381dce72934e6, type: 3}
 --- !u!1001 &1916779868
 PrefabInstance:
   m_ObjectHideFlags: 0
