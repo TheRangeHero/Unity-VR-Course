@@ -8,26 +8,26 @@ using System;
 
 public class SimpleUIControl : MonoBehaviour
 {
-    [SerializeField] XRButtonInteractable startButton;
-    [SerializeField] string[] msgStrings;
     [SerializeField] TMP_Text[] msgTexts;
-    [SerializeField] GameObject keyIndicatorLight;
-    void Start()
+    [SerializeField] ProgressControl progressControl;
+
+    void OnEnable()
     {
-        if (startButton != null)
+        if (progressControl != null)
         {
-            startButton.selectEntered.AddListener(StartButtonPressed);
+            progressControl.OnStartGame.AddListener(StartGame);
+            progressControl.OnChallengecomplete.AddListener(ChallengeComplete);
         }
     }
 
-    private void StartButtonPressed(SelectEnterEventArgs arg0)
+    private void ChallengeComplete(string arg0)
     {
-        SetText(msgStrings[1]);
-        if (keyIndicatorLight != null)
-        {
+        SetText(arg0);
+    }
 
-            keyIndicatorLight.SetActive(true);
-        }
+    private void StartGame(string arg0)
+    {
+        SetText(arg0);
     }
 
     public void SetText(string msg)
