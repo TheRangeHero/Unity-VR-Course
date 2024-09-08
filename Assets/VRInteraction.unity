@@ -22481,19 +22481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnDetroy:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 359317949}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   columns: 13
   rows: 4
   wallCubePrefab: {fileID: 8769790643816005301, guid: 05811702bab025b4e849684d5cd650da, type: 3}
@@ -22598,6 +22586,7 @@ MonoBehaviour:
   deleteWall: 0
   destroyWall: 0
   maxPower: 4000
+  destroyWallClip: {fileID: 8300000, guid: 966117de60fa8db4a9fc27cd9f180bba, type: 3}
 --- !u!4 &699683031
 Transform:
   m_ObjectHideFlags: 0
@@ -25059,6 +25048,7 @@ Transform:
   - {fileID: 1929210959}
   - {fileID: 623518655}
   - {fileID: 1452106299}
+  - {fileID: 1215808274}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &774389548 stripped
@@ -38981,6 +38971,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1213113318}
   m_CullTransparentMesh: 1
+--- !u!1 &1215808273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1215808274}
+  - component: {fileID: 1215808275}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1215808274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215808273}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 771884753}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1215808275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215808273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 169a8021c9ea6e344956cec43d9ca353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wall: {fileID: 699683030}
+  wallSource: {fileID: 359317949}
+  destroyWallClip: {fileID: 0}
+  fallBackClip: {fileID: 0}
 --- !u!1001 &1217482139
 PrefabInstance:
   m_ObjectHideFlags: 0

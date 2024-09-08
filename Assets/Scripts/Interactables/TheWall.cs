@@ -8,6 +8,7 @@ public class TheWall : MonoBehaviour
 {
     public UnityEvent OnDetroy;
 
+    GameObject[] wallCubes;
     [SerializeField] int columns;
     [SerializeField] int rows;
     [SerializeField] GameObject wallCubePrefab;
@@ -16,12 +17,15 @@ public class TheWall : MonoBehaviour
     [SerializeField] XRSocketInteractor wallSocket;
     [SerializeField] ExplosiveDevice explosiveDevice;
     [SerializeField] List<GeneratedColumn> generatedColumn;
-    GameObject[] wallCubes;
     [SerializeField] float cubeSpacing = 0.005f;
     [SerializeField] bool buildWall;
     [SerializeField] bool deleteWall;
     [SerializeField] bool destroyWall;
     [SerializeField] int maxPower;
+    [SerializeField] AudioClip destroyWallClip;
+
+
+    public AudioClip GetDestroyClip => destroyWallClip;
 
     private Vector3 cubeSize;
     private Vector3 spawPosition;
