@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRAudioManager : MonoBehaviour
 {
+    [Header("Grab Interactables")]
     [SerializeField] XRGrabInteractable[] grabInteractables;
     [SerializeField] AudioSource activatedSound;
     [SerializeField] AudioSource grabSound;
@@ -13,13 +15,58 @@ public class XRAudioManager : MonoBehaviour
     [SerializeField] AudioClip keyClip;
     [SerializeField] AudioClip grabActivatedClip;
     [SerializeField] AudioClip wandActivatedClip;
+
+    [Header("Drawer Interactable")]
+    [SerializeField] DrawerInteractable drawer;
+    [SerializeField] AudioSource drawerSound;
+    [SerializeField] AudioClip drawerMoveClip;
+
+    [Header("The Wall")]
     [SerializeField] TheWall wall;
-    [SerializeField] AudioSource wallSource;
+    [SerializeField] AudioSource wallSound;
     [SerializeField] AudioClip destroyWallClip;
     [SerializeField] private AudioClip fallBackClip;
     private const string FallBackClip_Name = "fallBackClip";
 
     private void OnEnable()
+    {
+        if (fallBackClip == null)
+        {
+            fallBackClip = AudioClip.Create(FallBackClip_Name, 1, 1, 1000, true);
+        }
+
+        SetGrabbables();
+
+        if (drawer != null)
+        {
+            SetDrawerInteractable();
+        }
+        if (wall != null)
+        {
+            SetWall();
+        }
+    }
+
+    private void SetDrawerInteractable()
+    {
+        drawerSound = drawer.transform.AddComponent<AudioSource>();
+        drawerMoveClip = drawer.GetDrawerMoveClip;
+        CheckClip(drawerMoveClip);
+        drawerSound.clip = drawerMoveClip;
+        drawerSound.loop = true;
+
+        drawer.selectEntered.AddListener(OnDrawerMove);
+        drawer.selectExited.AddListener(OnDrawerStop);
+    }
+
+    private void SetWall()
+    {
+        destroyWallClip = wall.GetDestroyClip;
+        CheckClip(destroyWallClip);
+        wall.OnDetroy.AddListener(OnDestroyWall);
+    }
+
+    private void SetGrabbables()
     {
         grabInteractables = FindObjectsByType<XRGrabInteractable>(FindObjectsSortMode.None);
         for (int i = 0; i < grabInteractables.Length; i++)
@@ -28,19 +75,24 @@ public class XRAudioManager : MonoBehaviour
             grabInteractables[i].selectExited.AddListener(OnSelectExitGrabbable);
             grabInteractables[i].activated.AddListener(OnActivatedGrabbable);
         }
-        if (fallBackClip == null)
+    }
+
+    private void CheckClip(AudioClip clip)
+    {
+        if (clip == null)
         {
-            fallBackClip = AudioClip.Create(FallBackClip_Name, 1, 1, 1000, true);
+            clip = fallBackClip;
         }
-        if (wall != null)
-        {
-            destroyWallClip = wall.GetDestroyClip;
-            if (destroyWallClip == null)
-            {
-                destroyWallClip = fallBackClip;
-            }
-            wall.OnDetroy.AddListener(OnDestroyWall);
-        }
+    }
+
+    private void OnDrawerStop(SelectExitEventArgs arg0)
+    {
+        drawerSound.Stop();
+    }
+
+    private void OnDrawerMove(SelectEnterEventArgs arg0)
+    {
+        drawerSound.Play();
     }
 
     private void OnActivatedGrabbable(ActivateEventArgs arg0)
@@ -78,9 +130,9 @@ public class XRAudioManager : MonoBehaviour
 
     private void OnDestroyWall()
     {
-        if (wallSource != null)
+        if (wallSound != null)
         {
-            wallSource.Play();
+            wallSound.Play();
         }
     }
 

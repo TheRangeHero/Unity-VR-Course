@@ -39178,12 +39178,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabInteractables: []
+  activatedSound: {fileID: 1986345884}
   grabSound: {fileID: 372015104}
   grabClip: {fileID: 8300000, guid: a7d20e9f23bd7cc449823e482e098902, type: 3}
   keyClip: {fileID: 8300000, guid: 256bdb10da09c744f86381dce72934e6, type: 3}
-  activatedSound: {fileID: 1986345884}
   grabActivatedClip: {fileID: 8300000, guid: a7d20e9f23bd7cc449823e482e098902, type: 3}
   wandActivatedClip: {fileID: 8300000, guid: 79f0548b92e2b2c48a00514b4f9aa04a, type: 3}
+  drawer: {fileID: 7529789952200838134}
+  drawerSound: {fileID: 0}
+  drawerMoveClip: {fileID: 0}
   wall: {fileID: 699683030}
   wallSource: {fileID: 359317949}
   destroyWallClip: {fileID: 0}
@@ -75528,9 +75531,10 @@ MonoBehaviour:
   drawerTransform: {fileID: 6253549086504168987}
   keySocket: {fileID: 9123782382412931080}
   keyIndicatorLight: {fileID: 867432490}
-  isLocked: 1
+  isLocked: 0
   limitDistance: {x: 0.2, y: 0.2, z: 0.02}
   drawerLimitZ: 0.8
+  drawerMoveClip: {fileID: 8300000, guid: 5a473077dfada7641998c47c8e78f28e, type: 3}
 --- !u!1 &7584415455270058088
 GameObject:
   m_ObjectHideFlags: 0
