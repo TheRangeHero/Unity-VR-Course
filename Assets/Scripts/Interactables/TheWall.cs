@@ -23,9 +23,11 @@ public class TheWall : MonoBehaviour
     [SerializeField] bool destroyWall;
     [SerializeField] int maxPower;
     [SerializeField] AudioClip destroyWallClip;
+    [SerializeField] AudioClip socketClip;
 
-
+    public XRSocketInteractor GetWallSocket => wallSocket;
     public AudioClip GetDestroyClip => destroyWallClip;
+    public AudioClip GetSocketclip => socketClip;
 
     private Vector3 cubeSize;
     private Vector3 spawPosition;
