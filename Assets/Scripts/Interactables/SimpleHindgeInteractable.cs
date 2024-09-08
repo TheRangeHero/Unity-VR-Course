@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
@@ -9,8 +10,13 @@ public abstract class SimpleHindgeInteractable : XRSimpleInteractable
 {
     [SerializeField] bool isLocked;
     [SerializeField] Vector3 positionLimits;
+    [SerializeField] AudioClip hingeMoveClip;
+
     private const string Default_Layer = "Default";
     private const string Grab_Layer = "Grab";
+
+    public UnityEvent<SimpleHindgeInteractable> OnHingeSelected;
+    public AudioClip GetHingeMoveClip => hingeMoveClip;
 
     private Transform grabHand;
     private Collider hingeCollider;
@@ -40,6 +46,7 @@ public abstract class SimpleHindgeInteractable : XRSimpleInteractable
         {
             base.OnSelectEntered(args);
             grabHand = args.interactorObject.transform;
+            OnHingeSelected?.Invoke(this);
         }
     }
     protected override void OnSelectExited(SelectExitEventArgs args)
