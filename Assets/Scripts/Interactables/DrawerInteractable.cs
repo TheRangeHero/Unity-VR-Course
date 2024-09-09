@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Events;
 
 public class DrawerInteractable : XRGrabInteractable
 {
@@ -27,6 +28,9 @@ public class DrawerInteractable : XRGrabInteractable
     public AudioClip GetDrawerMoveClip => drawerMoveClip;
     public AudioClip GetSocketedClip => socketedClip;
     public XRSocketInteractor GetKeySocket => keySocket;
+    public XRPhysicsButtonInteractable GetPhysicsButton => physicsButton;
+
+    public UnityEvent OnDrawerDetach;
 
     void Start()
     {
@@ -151,6 +155,8 @@ public class DrawerInteractable : XRGrabInteractable
     {
         isDetached = true;
         drawerTransform.SetParent(this.transform);
+
+        OnDrawerDetach?.Invoke();
     }
 
     private void ChangeLayerMaks(string mask)
