@@ -33,7 +33,6 @@ public class ProgressControl : MonoBehaviour
     [SerializeField] string[] challengeStrings;
     [SerializeField] string startGameString;
 
-
     private bool startGameBool;
     private int challengeNumber;
     void Start()
