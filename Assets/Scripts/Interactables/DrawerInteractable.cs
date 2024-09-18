@@ -24,6 +24,7 @@ public class DrawerInteractable : XRGrabInteractable
     private const string Grab_Layer = "Grab";
     private bool isGrabbed;
     private Vector3 limitPositions;
+    private Rigidbody rb;
 
     public AudioClip GetDrawerMoveClip => drawerMoveClip;
     public AudioClip GetSocketedClip => socketedClip;
@@ -34,6 +35,8 @@ public class DrawerInteractable : XRGrabInteractable
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+
         if (keySocket != null)
         {
             keySocket.selectEntered.AddListener(OnDrawerUnlocked);
@@ -93,10 +96,17 @@ public class DrawerInteractable : XRGrabInteractable
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
         base.OnSelectExited(args);
-        ChangeLayerMaks(Grab_Layer);
-        isGrabbed = false;
 
-        transform.localPosition = drawerTransform.localPosition;
+        if (!isDetached)
+        {
+            ChangeLayerMaks(Grab_Layer);
+            isGrabbed = false;
+            transform.localPosition = drawerTransform.localPosition;
+        }
+        else
+        {
+            rb.isKinematic = false;
+        }
     }
 
     void Update()
